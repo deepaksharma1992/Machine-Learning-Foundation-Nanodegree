@@ -287,21 +287,27 @@ In the TMDb movie data analysis we will investige the following data
 \begin{itemize}
 \tightlist
 \item
-  How the popularity of the movie varies across different years.
+  How the popularity of the movie varies across different years. We can
+  also get the top 5 year and the lowest 5 year according to the
+  popularity of movies.
 \item
   How the budget of the movies varies across different years.
+\item
+  We will perform the hypothesis test where we try to investigate that
+  wether the vote average of action movies are more than the other
+  movies.
 \end{itemize}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}40}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{l+s+sd}{ created by deepak }
-         \PY{l+s+sd}{ description importing the libraries used for the movie data analysis}
-         \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
-         \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k+kn}{as} \PY{n+nn}{pd}
-         \PY{k+kn}{import} \PY{n+nn}{matplotlib.pyplot} \PY{k+kn}{as} \PY{n+nn}{plt}
-         \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k+kn}{as} \PY{n+nn}{sns}
-         \PY{o}{\PYZpc{}}\PY{k}{pylab} inline
+{\color{incolor}In [{\color{incolor}205}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{l+s+sd}{ created by deepak }
+          \PY{l+s+sd}{ description importing the libraries used for the movie data analysis}
+          \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k+kn}{as} \PY{n+nn}{np}
+          \PY{k+kn}{import} \PY{n+nn}{pandas} \PY{k+kn}{as} \PY{n+nn}{pd}
+          \PY{k+kn}{import} \PY{n+nn}{matplotlib.pyplot} \PY{k+kn}{as} \PY{n+nn}{plt}
+          \PY{k+kn}{import} \PY{n+nn}{seaborn} \PY{k+kn}{as} \PY{n+nn}{sns}
+          \PY{o}{\PYZpc{}}\PY{k}{pylab} inline
 \end{Verbatim}
 
 
@@ -311,149 +317,227 @@ Populating the interactive namespace from numpy and matplotlib
     \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}55}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{l+s+sd}{ created by deepak }
-         \PY{l+s+sd}{ description data frame for reading all the movie list created and seeing the top data on the list using the head function}
-         \PY{l+s+sd}{ \PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{n}{movie\PYZus{}df}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tmdb\PYZhy{}movies.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
-         \PY{n}{movie\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}206}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{l+s+sd}{created by deepak }
+          \PY{l+s+sd}{ description data frame for reading all the movie list created and seeing the top data on the list using the head function}
+          \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{n}{movie\PYZus{}df}\PY{o}{=}\PY{n}{pd}\PY{o}{.}\PY{n}{read\PYZus{}csv}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{tmdb\PYZhy{}movies.csv}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+          \PY{n}{movie\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}55}]:}        id    imdb\_id  popularity     budget     revenue  \textbackslash{}
-         0  135397  tt0369610   32.985763  150000000  1513528810   
-         1   76341  tt1392190   28.419936  150000000   378436354   
-         2  262500  tt2908446   13.112507  110000000   295238201   
-         3  140607  tt2488496   11.173104  200000000  2068178225   
-         4  168259  tt2820852    9.335014  190000000  1506249360   
-         
-                          original\_title  \textbackslash{}
-         0                Jurassic World   
-         1            Mad Max: Fury Road   
-         2                     Insurgent   
-         3  Star Wars: The Force Awakens   
-         4                     Furious 7   
-         
-                                                         cast  \textbackslash{}
-         0  Chris Pratt|Bryce Dallas Howard|Irrfan Khan|Vi{\ldots}   
-         1  Tom Hardy|Charlize Theron|Hugh Keays-Byrne|Nic{\ldots}   
-         2  Shailene Woodley|Theo James|Kate Winslet|Ansel{\ldots}   
-         3  Harrison Ford|Mark Hamill|Carrie Fisher|Adam D{\ldots}   
-         4  Vin Diesel|Paul Walker|Jason Statham|Michelle {\ldots}   
-         
-                                                     homepage          director  \textbackslash{}
-         0                      http://www.jurassicworld.com/   Colin Trevorrow   
-         1                        http://www.madmaxmovie.com/     George Miller   
-         2     http://www.thedivergentseries.movie/\#insurgent  Robert Schwentke   
-         3  http://www.starwars.com/films/star-wars-episod{\ldots}       J.J. Abrams   
-         4                           http://www.furious7.com/         James Wan   
-         
-                                  tagline      {\ldots}       \textbackslash{}
-         0              The park is open.      {\ldots}        
-         1             What a Lovely Day.      {\ldots}        
-         2     One Choice Can Destroy You      {\ldots}        
-         3  Every generation has a story.      {\ldots}        
-         4            Vengeance Hits Home      {\ldots}        
-         
-                                                     overview runtime  \textbackslash{}
-         0  Twenty-two years after the events of Jurassic {\ldots}     124   
-         1  An apocalyptic story set in the furthest reach{\ldots}     120   
-         2  Beatrice Prior must confront her inner demons {\ldots}     119   
-         3  Thirty years after defeating the Galactic Empi{\ldots}     136   
-         4  Deckard Shaw seeks revenge against Dominic Tor{\ldots}     137   
-         
-                                               genres  \textbackslash{}
-         0  Action|Adventure|Science Fiction|Thriller   
-         1  Action|Adventure|Science Fiction|Thriller   
-         2         Adventure|Science Fiction|Thriller   
-         3   Action|Adventure|Science Fiction|Fantasy   
-         4                      Action|Crime|Thriller   
-         
-                                         production\_companies release\_date vote\_count  \textbackslash{}
-         0  Universal Studios|Amblin Entertainment|Legenda{\ldots}   06-09-2015       5562   
-         1  Village Roadshow Pictures|Kennedy Miller Produ{\ldots}      5/13/15       6185   
-         2  Summit Entertainment|Mandeville Films|Red Wago{\ldots}      3/18/15       2480   
-         3          Lucasfilm|Truenorth Productions|Bad Robot     12/15/15       5292   
-         4  Universal Pictures|Original Film|Media Rights {\ldots}   04-01-2015       2947   
-         
-            vote\_average  release\_year   budget\_adj   revenue\_adj  
-         0           6.5          2015  137999939.3  1.392446e+09  
-         1           7.1          2015  137999939.3  3.481613e+08  
-         2           6.3          2015  101199955.5  2.716190e+08  
-         3           7.5          2015  183999919.0  1.902723e+09  
-         4           7.3          2015  174799923.1  1.385749e+09  
-         
-         [5 rows x 21 columns]
+{\color{outcolor}Out[{\color{outcolor}206}]:}        id    imdb\_id  popularity     budget     revenue  \textbackslash{}
+          0  135397  tt0369610   32.985763  150000000  1513528810   
+          1   76341  tt1392190   28.419936  150000000   378436354   
+          2  262500  tt2908446   13.112507  110000000   295238201   
+          3  140607  tt2488496   11.173104  200000000  2068178225   
+          4  168259  tt2820852    9.335014  190000000  1506249360   
+          
+                           original\_title  \textbackslash{}
+          0                Jurassic World   
+          1            Mad Max: Fury Road   
+          2                     Insurgent   
+          3  Star Wars: The Force Awakens   
+          4                     Furious 7   
+          
+                                                          cast  \textbackslash{}
+          0  Chris Pratt|Bryce Dallas Howard|Irrfan Khan|Vi{\ldots}   
+          1  Tom Hardy|Charlize Theron|Hugh Keays-Byrne|Nic{\ldots}   
+          2  Shailene Woodley|Theo James|Kate Winslet|Ansel{\ldots}   
+          3  Harrison Ford|Mark Hamill|Carrie Fisher|Adam D{\ldots}   
+          4  Vin Diesel|Paul Walker|Jason Statham|Michelle {\ldots}   
+          
+                                                      homepage          director  \textbackslash{}
+          0                      http://www.jurassicworld.com/   Colin Trevorrow   
+          1                        http://www.madmaxmovie.com/     George Miller   
+          2     http://www.thedivergentseries.movie/\#insurgent  Robert Schwentke   
+          3  http://www.starwars.com/films/star-wars-episod{\ldots}       J.J. Abrams   
+          4                           http://www.furious7.com/         James Wan   
+          
+                                   tagline      {\ldots}       \textbackslash{}
+          0              The park is open.      {\ldots}        
+          1             What a Lovely Day.      {\ldots}        
+          2     One Choice Can Destroy You      {\ldots}        
+          3  Every generation has a story.      {\ldots}        
+          4            Vengeance Hits Home      {\ldots}        
+          
+                                                      overview runtime  \textbackslash{}
+          0  Twenty-two years after the events of Jurassic {\ldots}     124   
+          1  An apocalyptic story set in the furthest reach{\ldots}     120   
+          2  Beatrice Prior must confront her inner demons {\ldots}     119   
+          3  Thirty years after defeating the Galactic Empi{\ldots}     136   
+          4  Deckard Shaw seeks revenge against Dominic Tor{\ldots}     137   
+          
+                                                genres  \textbackslash{}
+          0  Action|Adventure|Science Fiction|Thriller   
+          1  Action|Adventure|Science Fiction|Thriller   
+          2         Adventure|Science Fiction|Thriller   
+          3   Action|Adventure|Science Fiction|Fantasy   
+          4                      Action|Crime|Thriller   
+          
+                                          production\_companies release\_date vote\_count  \textbackslash{}
+          0  Universal Studios|Amblin Entertainment|Legenda{\ldots}   06-09-2015       5562   
+          1  Village Roadshow Pictures|Kennedy Miller Produ{\ldots}      5/13/15       6185   
+          2  Summit Entertainment|Mandeville Films|Red Wago{\ldots}      3/18/15       2480   
+          3          Lucasfilm|Truenorth Productions|Bad Robot     12/15/15       5292   
+          4  Universal Pictures|Original Film|Media Rights {\ldots}   04-01-2015       2947   
+          
+             vote\_average  release\_year   budget\_adj   revenue\_adj  
+          0           6.5          2015  137999939.3  1.392446e+09  
+          1           7.1          2015  137999939.3  3.481613e+08  
+          2           6.3          2015  101199955.5  2.716190e+08  
+          3           7.5          2015  183999919.0  1.902723e+09  
+          4           7.3          2015  174799923.1  1.385749e+09  
+          
+          [5 rows x 21 columns]
 \end{Verbatim}
             
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}53}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{l+s+sd}{created by deepak}
-         \PY{l+s+sd}{description creating a data frame by grouping the movie by release year and taking the mean of each year data }
-         \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{n}{data\PYZus{}movie}\PY{o}{=}\PY{n}{movie\PYZus{}df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{release\PYZus{}year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{as\PYZus{}index}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
-         \PY{n}{data\PYZus{}movie}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}207}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{l+s+sd}{created by deepak}
+          \PY{l+s+sd}{description dataframe to give the mean of movies according to the release year.}
+          \PY{l+s+sd}{Here we are trying to group all the movies and group them according to their release year and finally taking the mean of the data.}
+          \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{n}{data\PYZus{}movie}\PY{o}{=}\PY{n}{movie\PYZus{}df}\PY{o}{.}\PY{n}{groupby}\PY{p}{(}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{release\PYZus{}year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{as\PYZus{}index}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+          \PY{n}{data\PYZus{}movie}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}53}]:}    release\_year            id  popularity        budget       revenue  \textbackslash{}
-         0          1960  15715.281250    0.458932  6.892796e+05  4.531406e+06   
-         1          1961  18657.000000    0.422827  1.488290e+06  1.089420e+07   
-         2          1962  17001.062500    0.454783  1.710066e+06  6.736870e+06   
-         3          1963  16556.000000    0.502706  2.156809e+06  5.511911e+06   
-         4          1964  17379.571429    0.412428  9.400753e+05  8.118614e+06   
-         
-               runtime  vote\_count  vote\_average    budget\_adj   revenue\_adj  
-         0  110.656250   77.531250      6.325000  5.082036e+06  3.340991e+07  
-         1  119.419355   77.580645      6.374194  1.085687e+07  7.947167e+07  
-         2  124.343750   74.750000      6.343750  1.232693e+07  4.856238e+07  
-         3  111.323529   82.823529      6.329412  1.535687e+07  3.924580e+07  
-         4  109.214286   74.690476      6.211905  6.608980e+06  5.707603e+07  
+{\color{outcolor}Out[{\color{outcolor}207}]:}    release\_year            id  popularity        budget       revenue  \textbackslash{}
+          0          1960  15715.281250    0.458932  6.892796e+05  4.531406e+06   
+          1          1961  18657.000000    0.422827  1.488290e+06  1.089420e+07   
+          2          1962  17001.062500    0.454783  1.710066e+06  6.736870e+06   
+          3          1963  16556.000000    0.502706  2.156809e+06  5.511911e+06   
+          4          1964  17379.571429    0.412428  9.400753e+05  8.118614e+06   
+          
+                runtime  vote\_count  vote\_average    budget\_adj   revenue\_adj  
+          0  110.656250   77.531250      6.325000  5.082036e+06  3.340991e+07  
+          1  119.419355   77.580645      6.374194  1.085687e+07  7.947167e+07  
+          2  124.343750   74.750000      6.343750  1.232693e+07  4.856238e+07  
+          3  111.323529   82.823529      6.329412  1.535687e+07  3.924580e+07  
+          4  109.214286   74.690476      6.211905  6.608980e+06  5.707603e+07  
+\end{Verbatim}
+            
+    \section{Top 5 popular year}\label{top-5-popular-year}
+
+Here we are creating the dataframe from the data\_movie dataframe and
+sorting the years according to the popularity in descending order. Then
+we are displalying the top five years where the mean popularity was
+higher than the other years.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}208}]:} \PY{n}{data\PYZus{}movie\PYZus{}sorted}\PY{o}{=}\PY{n}{data\PYZus{}movie}\PY{o}{.}\PY{n}{sort\PYZus{}values}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{popularity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,}\PY{n}{ascending}\PY{o}{=}\PY{n+nb+bp}{False}\PY{p}{)}
+          \PY{n}{data\PYZus{}movie\PYZus{}sorted}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}208}]:}     release\_year             id  popularity        budget       revenue  \textbackslash{}
+          55          2015  296762.012719    1.030657  1.207718e+07  4.254762e+07   
+          54          2014  243004.421429    0.887268  1.131999e+07  3.475879e+07   
+          44          2004   14554.231270    0.722438  2.335616e+07  5.470301e+07   
+          43          2003   19671.323843    0.719083  2.220590e+07  5.387275e+07   
+          37          1997   15234.760417    0.712003  2.474524e+07  5.549569e+07   
+          
+                 runtime  vote\_count  vote\_average    budget\_adj   revenue\_adj  
+          55   96.375199  290.019078      5.885692  1.111100e+07  3.914379e+07  
+          54   98.331429  294.660000      5.920714  1.042674e+07  3.201601e+07  
+          44  105.364821  257.980456      5.988599  2.696341e+07  6.315163e+07  
+          43  100.679715  243.505338      5.930961  2.632182e+07  6.385821e+07  
+          37  106.505208  213.463542      5.988542  3.361543e+07  7.538870e+07  
+\end{Verbatim}
+            
+    \section{Lowest 5 popular year}\label{lowest-5-popular-year}
+
+Here we are displalying the lowest five years where the mean popularity
+was higher than the other years.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}209}]:} \PY{n}{data\PYZus{}movie\PYZus{}sorted}\PY{o}{.}\PY{n}{tail}\PY{p}{(}\PY{l+m+mi}{5}\PY{p}{)}
+\end{Verbatim}
+
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}209}]:}     release\_year            id  popularity        budget       revenue  \textbackslash{}
+          18          1978  21710.769231    0.413314  3.215339e+06  2.107353e+07   
+          4           1964  17379.571429    0.412428  9.400753e+05  8.118614e+06   
+          5           1965  17564.714286    0.342587  2.005860e+06  1.308805e+07   
+          10          1970  18339.195122    0.341700  3.096755e+06  1.366395e+07   
+          6           1966  16514.000000    0.304112  1.251191e+06  1.842102e+06   
+          
+                 runtime  vote\_count  vote\_average    budget\_adj   revenue\_adj  
+          18  110.076923   75.353846      6.130769  1.074791e+07  7.044251e+07  
+          4   109.214286   74.690476      6.211905  6.608980e+06  5.707603e+07  
+          5   118.171429   52.000000      6.194286  1.388168e+07  9.057670e+07  
+          10  112.048780   49.048780      6.417073  1.739252e+07  7.674178e+07  
+          6   106.891304   31.739130      6.128261  8.405522e+06  1.237527e+07  
 \end{Verbatim}
             
     \section{Scatter Plot (Release Year,
 Popularity)}\label{scatter-plot-release-year-popularity}
 
 The graph plots the average popularity of the movies in different years.
+The graph scale as year in x-axis and the popularity on the scale of 0.1
+from 0.3 to 1 on the y-axis
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}42}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{data\PYZus{}movie}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{release\PYZus{}year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{data\PYZus{}movie}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{popularity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}210}]:} \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+          \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Popularity per Year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+          
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{popularity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{data\PYZus{}movie}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{release\PYZus{}year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{data\PYZus{}movie}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{popularity}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}42}]:} <matplotlib.collections.PathCollection at 0xf18f630>
+{\color{outcolor}Out[{\color{outcolor}210}]:} <matplotlib.collections.PathCollection at 0x1437e860>
 \end{Verbatim}
             
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_5_1.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_9_1.png}
     \end{center}
     { \hspace*{\fill} \\}
     
     \section{Conclusions}\label{conclusions}
 
 From the above graph we can conclude that the average popularity of the
-movies have increased over the time
+movies have increased over the time.
+
+Limitations -
+
+The popularity of the movies are not sole dependent on the year as they
+can be furthur investigated under the genre of the movie.
+
+The analysis can be furthur made interested if the age of the viewers
+can be provided which makes it easier to understand that which age group
+was most active and furthur investigation could be done.
 
     \section{Bar Graph(Release Year,
 Budget)}\label{bar-graphrelease-year-budget}
 
 The bar graph shows the average budget of the movies across different
-year
+year. The graph shows the year on the x-axis and the budget of the
+movies on the y-axis.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}43}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{data\PYZus{}movie}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{release\PYZus{}year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{data\PYZus{}movie}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{budget}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}211}]:} \PY{n}{fig} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{figure}\PY{p}{(}\PY{p}{)}
+          \PY{n}{fig}\PY{o}{.}\PY{n}{suptitle}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Budget}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{20}\PY{p}{)}
+          
+          \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{dollars}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fontsize}\PY{o}{=}\PY{l+m+mi}{16}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{bar}\PY{p}{(}\PY{n}{data\PYZus{}movie}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{release\PYZus{}year}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{data\PYZus{}movie}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{budget}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}43}]:} <Container object of 56 artists>
+{\color{outcolor}Out[{\color{outcolor}211}]:} <Container object of 56 artists>
 \end{Verbatim}
             
     \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_8_1.png}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_12_1.png}
     \end{center}
     { \hspace*{\fill} \\}
     
@@ -462,224 +546,322 @@ year
 The graph shows that the average budget of the movies have increased
 from mid 90's in the preceedings year.
 
-    \section{\# Data Wrangling And
-Cleaning}\label{data-wrangling-and-cleaning}
+Limitaions : There could be limitaions as over the time the production
+time must have incresed and is dependent on various variables over time.
+Good analysis can have the data of some of the factors and the analysis
+can be more accurate to investigate the reasons for the increase in
+budget. Eg- salary of actors, set cost.
+
+The action movies can be more costly as compared to a romantic or comedy
+movie and the technology have also been evolved as compared to early
+90's. So in this analysis these consideration are neglected and the
+analysis are made on sole basis of the the average budget of the movies
+in each year.
+
+    \# Data Wrangling And Cleaning The data contains the fields where the
+budget,revenue are not provided, so we are removing the lower bound
+outlieres from our data frame. We are taking the movie\_budget\_df
+datdaframe and only taking out the movie with budget, revenue and the
+vote count more than 100. The reason for this is that it will eliminate
+the values where the value is not provided or the value is given zero.
+Also it helps to eliminate the outliers from our dataset. Finally we are
+using the head function on the dataframe to see the top five rows of our
+dataframe.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}59}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{l+s+sd}{created by deepak}
-         \PY{l+s+sd}{The data contains the fields where the budget,revenue are not provided, so we are removing the lower bound outlieres from our}
-         \PY{l+s+sd}{data frame}
-         
-         \PY{l+s+sd}{It is also very hard to consider the movies where the vote count is less than 100}
-         \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{=}\PY{n}{movie\PYZus{}df}\PY{p}{[}\PY{n}{movie\PYZus{}df}\PY{o}{.}\PY{n}{budget}\PY{o}{\PYZgt{}}\PY{l+m+mi}{100}\PY{p}{]}
-         \PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{=}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{.}\PY{n}{revenue}\PY{o}{\PYZgt{}}\PY{l+m+mi}{100}\PY{p}{]}
-         \PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{=}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{.}\PY{n}{vote\PYZus{}count}\PY{o}{\PYZgt{}}\PY{l+m+mi}{100}\PY{p}{]}
-         
-         \PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}212}]:} \PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{=}\PY{n}{movie\PYZus{}df}\PY{p}{[}\PY{n}{movie\PYZus{}df}\PY{o}{.}\PY{n}{budget}\PY{o}{\PYZgt{}}\PY{l+m+mi}{100}\PY{p}{]}
+          \PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{=}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{.}\PY{n}{revenue}\PY{o}{\PYZgt{}}\PY{l+m+mi}{100}\PY{p}{]}
+          \PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{=}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{.}\PY{n}{vote\PYZus{}count}\PY{o}{\PYZgt{}}\PY{l+m+mi}{100}\PY{p}{]}
+          
+          \PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{o}{.}\PY{n}{head}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}59}]:}        id    imdb\_id  popularity     budget     revenue  \textbackslash{}
-         0  135397  tt0369610   32.985763  150000000  1513528810   
-         1   76341  tt1392190   28.419936  150000000   378436354   
-         2  262500  tt2908446   13.112507  110000000   295238201   
-         3  140607  tt2488496   11.173104  200000000  2068178225   
-         4  168259  tt2820852    9.335014  190000000  1506249360   
-         
-                          original\_title  \textbackslash{}
-         0                Jurassic World   
-         1            Mad Max: Fury Road   
-         2                     Insurgent   
-         3  Star Wars: The Force Awakens   
-         4                     Furious 7   
-         
-                                                         cast  \textbackslash{}
-         0  Chris Pratt|Bryce Dallas Howard|Irrfan Khan|Vi{\ldots}   
-         1  Tom Hardy|Charlize Theron|Hugh Keays-Byrne|Nic{\ldots}   
-         2  Shailene Woodley|Theo James|Kate Winslet|Ansel{\ldots}   
-         3  Harrison Ford|Mark Hamill|Carrie Fisher|Adam D{\ldots}   
-         4  Vin Diesel|Paul Walker|Jason Statham|Michelle {\ldots}   
-         
-                                                     homepage          director  \textbackslash{}
-         0                      http://www.jurassicworld.com/   Colin Trevorrow   
-         1                        http://www.madmaxmovie.com/     George Miller   
-         2     http://www.thedivergentseries.movie/\#insurgent  Robert Schwentke   
-         3  http://www.starwars.com/films/star-wars-episod{\ldots}       J.J. Abrams   
-         4                           http://www.furious7.com/         James Wan   
-         
-                                  tagline      {\ldots}       \textbackslash{}
-         0              The park is open.      {\ldots}        
-         1             What a Lovely Day.      {\ldots}        
-         2     One Choice Can Destroy You      {\ldots}        
-         3  Every generation has a story.      {\ldots}        
-         4            Vengeance Hits Home      {\ldots}        
-         
-                                                     overview runtime  \textbackslash{}
-         0  Twenty-two years after the events of Jurassic {\ldots}     124   
-         1  An apocalyptic story set in the furthest reach{\ldots}     120   
-         2  Beatrice Prior must confront her inner demons {\ldots}     119   
-         3  Thirty years after defeating the Galactic Empi{\ldots}     136   
-         4  Deckard Shaw seeks revenge against Dominic Tor{\ldots}     137   
-         
-                                               genres  \textbackslash{}
-         0  Action|Adventure|Science Fiction|Thriller   
-         1  Action|Adventure|Science Fiction|Thriller   
-         2         Adventure|Science Fiction|Thriller   
-         3   Action|Adventure|Science Fiction|Fantasy   
-         4                      Action|Crime|Thriller   
-         
-                                         production\_companies release\_date vote\_count  \textbackslash{}
-         0  Universal Studios|Amblin Entertainment|Legenda{\ldots}   06-09-2015       5562   
-         1  Village Roadshow Pictures|Kennedy Miller Produ{\ldots}      5/13/15       6185   
-         2  Summit Entertainment|Mandeville Films|Red Wago{\ldots}      3/18/15       2480   
-         3          Lucasfilm|Truenorth Productions|Bad Robot     12/15/15       5292   
-         4  Universal Pictures|Original Film|Media Rights {\ldots}   04-01-2015       2947   
-         
-            vote\_average  release\_year   budget\_adj   revenue\_adj  
-         0           6.5          2015  137999939.3  1.392446e+09  
-         1           7.1          2015  137999939.3  3.481613e+08  
-         2           6.3          2015  101199955.5  2.716190e+08  
-         3           7.5          2015  183999919.0  1.902723e+09  
-         4           7.3          2015  174799923.1  1.385749e+09  
-         
-         [5 rows x 21 columns]
+{\color{outcolor}Out[{\color{outcolor}212}]:}        id    imdb\_id  popularity     budget     revenue  \textbackslash{}
+          0  135397  tt0369610   32.985763  150000000  1513528810   
+          1   76341  tt1392190   28.419936  150000000   378436354   
+          2  262500  tt2908446   13.112507  110000000   295238201   
+          3  140607  tt2488496   11.173104  200000000  2068178225   
+          4  168259  tt2820852    9.335014  190000000  1506249360   
+          
+                           original\_title  \textbackslash{}
+          0                Jurassic World   
+          1            Mad Max: Fury Road   
+          2                     Insurgent   
+          3  Star Wars: The Force Awakens   
+          4                     Furious 7   
+          
+                                                          cast  \textbackslash{}
+          0  Chris Pratt|Bryce Dallas Howard|Irrfan Khan|Vi{\ldots}   
+          1  Tom Hardy|Charlize Theron|Hugh Keays-Byrne|Nic{\ldots}   
+          2  Shailene Woodley|Theo James|Kate Winslet|Ansel{\ldots}   
+          3  Harrison Ford|Mark Hamill|Carrie Fisher|Adam D{\ldots}   
+          4  Vin Diesel|Paul Walker|Jason Statham|Michelle {\ldots}   
+          
+                                                      homepage          director  \textbackslash{}
+          0                      http://www.jurassicworld.com/   Colin Trevorrow   
+          1                        http://www.madmaxmovie.com/     George Miller   
+          2     http://www.thedivergentseries.movie/\#insurgent  Robert Schwentke   
+          3  http://www.starwars.com/films/star-wars-episod{\ldots}       J.J. Abrams   
+          4                           http://www.furious7.com/         James Wan   
+          
+                                   tagline      {\ldots}       \textbackslash{}
+          0              The park is open.      {\ldots}        
+          1             What a Lovely Day.      {\ldots}        
+          2     One Choice Can Destroy You      {\ldots}        
+          3  Every generation has a story.      {\ldots}        
+          4            Vengeance Hits Home      {\ldots}        
+          
+                                                      overview runtime  \textbackslash{}
+          0  Twenty-two years after the events of Jurassic {\ldots}     124   
+          1  An apocalyptic story set in the furthest reach{\ldots}     120   
+          2  Beatrice Prior must confront her inner demons {\ldots}     119   
+          3  Thirty years after defeating the Galactic Empi{\ldots}     136   
+          4  Deckard Shaw seeks revenge against Dominic Tor{\ldots}     137   
+          
+                                                genres  \textbackslash{}
+          0  Action|Adventure|Science Fiction|Thriller   
+          1  Action|Adventure|Science Fiction|Thriller   
+          2         Adventure|Science Fiction|Thriller   
+          3   Action|Adventure|Science Fiction|Fantasy   
+          4                      Action|Crime|Thriller   
+          
+                                          production\_companies release\_date vote\_count  \textbackslash{}
+          0  Universal Studios|Amblin Entertainment|Legenda{\ldots}   06-09-2015       5562   
+          1  Village Roadshow Pictures|Kennedy Miller Produ{\ldots}      5/13/15       6185   
+          2  Summit Entertainment|Mandeville Films|Red Wago{\ldots}      3/18/15       2480   
+          3          Lucasfilm|Truenorth Productions|Bad Robot     12/15/15       5292   
+          4  Universal Pictures|Original Film|Media Rights {\ldots}   04-01-2015       2947   
+          
+             vote\_average  release\_year   budget\_adj   revenue\_adj  
+          0           6.5          2015  137999939.3  1.392446e+09  
+          1           7.1          2015  137999939.3  3.481613e+08  
+          2           6.3          2015  101199955.5  2.716190e+08  
+          3           7.5          2015  183999919.0  1.902723e+09  
+          4           7.3          2015  174799923.1  1.385749e+09  
+          
+          [5 rows x 21 columns]
 \end{Verbatim}
             
-    \section{Scatter Plot(Revenue, Vote
-Average)}\label{scatter-plotrevenue-vote-average}
+    \section{Standarized Function}\label{standarized-function}
 
-The graph shows how the vote average as per the revenue of the movies
+This method takes the list and calculates its mean, standard deviation
+and returns the list with the standarized values in it
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}57}]:} \PY{n}{plt}\PY{o}{.}\PY{n}{scatter}\PY{p}{(}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{revenue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{,}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vote\PYZus{}average}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}213}]:} \PY{k}{def} \PY{n+nf}{standard\PYZus{}list}\PY{p}{(}\PY{n}{list\PYZus{}to\PYZus{}standardize}\PY{p}{)}\PY{p}{:}
+              \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{l+s+sd}{    created by deepak}
+          \PY{l+s+sd}{    description the method taked the list and send the list after standardizing it by performing the vectorized operations to it.}
+          \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+              \PY{n}{mean}\PY{o}{=}\PY{n}{list\PYZus{}to\PYZus{}standardize}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+              \PY{n}{sd}\PY{o}{=}\PY{n}{list\PYZus{}to\PYZus{}standardize}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+              \PY{k}{return} \PY{p}{(}\PY{n}{list\PYZus{}to\PYZus{}standardize}\PY{o}{\PYZhy{}}\PY{n}{mean}\PY{p}{)}\PY{o}{/}\PY{n}{sd}
+\end{Verbatim}
+
+
+    Here we are creating a one dimension list named as gain list where we
+are storing the profit made by each movie by taking out the difference
+between the revenue and the budget of the movie we have already omitted
+the outliers from the list.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}214}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{l+s+sd}{created by deepak}
+          \PY{l+s+sd}{description The total gain of the movies by taking the difference of revenue and the budget of the movies using the describe method}
+          \PY{l+s+sd}{to decribe the list data.}
+          \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{n}{gain\PYZus{}list}\PY{o}{=}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{revenue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{budget}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
+          \PY{n}{gain\PYZus{}list}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}57}]:} <matplotlib.collections.PathCollection at 0x12161668>
+{\color{outcolor}Out[{\color{outcolor}214}]:} count    2.598000e+03
+          mean     1.034365e+08
+          std      1.730138e+08
+          min     -1.657101e+08
+          25\%      9.930207e+06
+          50\%      4.994628e+07
+          75\%      1.274610e+08
+          max      2.544506e+09
+          dtype: float64
 \end{Verbatim}
             
-    \begin{center}
-    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_13_1.png}
-    \end{center}
-    { \hspace*{\fill} \\}
-    
-    \section{Conclusions}\label{conclusions}
-
-It is very hard to tell if the revenue is completely dependent on the
-vote average.
+    Here we are calling the standarized function created above and passing
+the gain list to know how much standard deviation away the revenue of
+each movie is from the list the list shows the profit in the standard
+deviation from the mean profit made by all movies. This list can be used
+in various analysis. As of now the it is not used in the analysis.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}60}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{l+s+sd}{created by deepak}
-         \PY{l+s+sd}{description the method taked the list and send the list after standardizing it by performing the vectorized operations to it.}
-         \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{k}{def} \PY{n+nf}{standard\PYZus{}list}\PY{p}{(}\PY{n}{list\PYZus{}to\PYZus{}standardize}\PY{p}{)}\PY{p}{:}
-             \PY{n}{mean}\PY{o}{=}\PY{n}{list\PYZus{}to\PYZus{}standardize}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
-             \PY{n}{sd}\PY{o}{=}\PY{n}{list\PYZus{}to\PYZus{}standardize}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
-             \PY{k}{return} \PY{p}{(}\PY{n}{list\PYZus{}to\PYZus{}standardize}\PY{o}{\PYZhy{}}\PY{n}{mean}\PY{p}{)}\PY{o}{/}\PY{n}{sd}
-\end{Verbatim}
-
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}51}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{l+s+sd}{created by deepak}
-         \PY{l+s+sd}{description The total gain of the movies by taking the difference of revenue and the budget of the movies }
-         \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{n}{gain\PYZus{}list}\PY{o}{=}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{revenue}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{\PYZhy{}}\PY{n}{movie\PYZus{}budget\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{budget}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}
-         \PY{n}{gain\PYZus{}list}\PY{o}{.}\PY{n}{describe}\PY{p}{(}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}215}]:} \PY{n}{standard\PYZus{}list}\PY{p}{(}\PY{n}{gain\PYZus{}list}\PY{p}{)}
 \end{Verbatim}
 
 
 \begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}51}]:} count    2.598000e+03
-         mean     1.034365e+08
-         std      1.730138e+08
-         min     -1.657101e+08
-         25\%      9.930207e+06
-         50\%      4.994628e+07
-         75\%      1.274610e+08
-         max      2.544506e+09
-         dtype: float64
+{\color{outcolor}Out[{\color{outcolor}215}]:} 0         7.283190
+          1         0.722485
+          2         0.472804
+          3        10.200006
+          4         7.009920
+          5         1.702257
+          6         1.052905
+          7         2.219152
+          8         5.660210
+          9         3.325007
+          10        3.076276
+          11       -0.551683
+          12       -0.471449
+          13        0.301713
+          14        5.904727
+          15        0.048110
+          16        1.007636
+          17        1.648225
+          18        1.987789
+          19        2.237318
+          20       -0.487827
+          21       -0.241175
+          22        1.485745
+          23        2.463474
+          24        0.011040
+          25        2.478956
+          26        0.256784
+          27        1.267908
+          28       -0.202816
+          29        0.848605
+                     {\ldots}    
+          10519    -0.403161
+          10589    -0.634722
+          10593    -0.499267
+          10594     1.906609
+          10595     0.296747
+          10596    -0.583402
+          10597    -0.082574
+          10601     0.292924
+          10606     0.062345
+          10608    -0.359333
+          10611    -0.442950
+          10648    -0.299174
+          10649    -0.505375
+          10650    -0.146442
+          10653    -0.148176
+          10689     0.154665
+          10690     0.298114
+          10691    -0.033030
+          10724    -0.164507
+          10725    -0.041197
+          10727    -0.359806
+          10728    -0.630250
+          10755     0.418332
+          10756     0.372499
+          10757    -0.283714
+          10758     0.819481
+          10759    -0.194993
+          10760     0.201507
+          10762    -0.395555
+          10770    -0.408849
+          Length: 2598, dtype: float64
 \end{Verbatim}
             
+    \section{Hypothesis Testing of popularity of the action
+movie}\label{hypothesis-testing-of-popularity-of-the-action-movie}
+
+Here in this hypothesis test we will try to prove the null hypothesis
+wrong that the vote average of action movies is different from the
+normal movies by performing the two tail z-test on our data set. The
+sample size of our data set is more than 30 and we will assume that we
+are considering the total population and not the sample data of the
+movies.
+
+Null Hypothesis (H0): The vote average of the action movies is same of
+that of the all movies. Alternate Hypothesis(HA): The vote average of
+the action movies and other movies are not same.
+
+Test type - A two tail z-test is performed for the analysis for 95\%
+confidence inteval.
+
+    \section{Action movie data function}\label{action-movie-data-function}
+
+The function takes the dataframe as input and returns the dataframe
+where the genre of the movie contains action on it. \#Data wrangling and
+cleaning process - Here we are creating a new empty dataframe as
+action\_df which will have the vote\_average in it. - We have uses a for
+loop to iterate to get the genres string. - We are checking if the
+values of the genre string is not NaN with the if condition. - The genre
+string contains the movie genre separated by \textbar{}. - We have
+separated the multiple genres with the split method which returns the
+array of genres. - Then we are iterating over the one dimension array
+using the list to search for the action word. - If the array contains
+the action we are adding the average vote to the action\_df dataframe -
+In the end we are returning the action\_df dataframe.
+
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}61}]:} \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{l+s+sd}{created by deepak}
-         \PY{l+s+sd}{description calling the function and showing the profit or loss in standard form}
-         \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
-         \PY{n}{standard\PYZus{}list}\PY{p}{(}\PY{n}{gain\PYZus{}list}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}216}]:} \PY{k}{def} \PY{n+nf}{action\PYZus{}movie\PYZus{}list}\PY{p}{(}\PY{n}{genre\PYZus{}df}\PY{p}{)}\PY{p}{:} 
+              \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{l+s+sd}{    created by deepak}
+          \PY{l+s+sd}{    description funtion for returning the vote average dataframe from the given dataframe}
+          \PY{l+s+sd}{    limitation this method assumes that the dataframe contains the vote\PYZus{}average column and returns only the action genres vote average.}
+          \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+              \PY{n}{action\PYZus{}df} \PY{o}{=} \PY{n}{pd}\PY{o}{.}\PY{n}{DataFrame}\PY{p}{(}\PY{n}{columns}\PY{o}{=}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vote\PYZus{}average}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{)}
+              \PY{k}{for} \PY{n}{index}\PY{p}{,} \PY{n}{row} \PY{o+ow}{in} \PY{n}{genre\PYZus{}df}\PY{o}{.}\PY{n}{iterrows}\PY{p}{(}\PY{p}{)}\PY{p}{:}        
+                  \PY{n}{genre\PYZus{}string}\PY{o}{=}\PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{genres}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}               
+                  \PY{k}{if} \PY{n}{genre\PYZus{}string}\PY{o}{!=}\PY{n}{NaN}\PY{p}{:}
+                      \PY{n}{movie\PYZus{}list}\PY{o}{=}\PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{genre\PYZus{}string}\PY{o}{.}\PY{n}{split}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{|}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{)}
+                      \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n}{np}\PY{o}{.}\PY{n}{nditer}\PY{p}{(}\PY{n}{movie\PYZus{}list}\PY{p}{)}\PY{p}{:}
+                          \PY{k}{if}\PY{p}{(}\PY{n}{i}\PY{o}{==}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Action}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
+                              \PY{n}{action\PYZus{}df}\PY{o}{=}\PY{n}{action\PYZus{}df}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{\PYZob{}}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vote\PYZus{}average}\PY{l+s+s1}{\PYZsq{}}\PY{p}{:}\PY{n}{row}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vote\PYZus{}average}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{p}{\PYZcb{}}\PY{p}{,} \PY{n}{ignore\PYZus{}index}\PY{o}{=}\PY{n+nb+bp}{True}\PY{p}{)} 
+          
+              \PY{k}{return} \PY{n}{action\PYZus{}df}
 \end{Verbatim}
 
 
-\begin{Verbatim}[commandchars=\\\{\}]
-{\color{outcolor}Out[{\color{outcolor}61}]:} 0         7.283190
-         1         0.722485
-         2         0.472804
-         3        10.200006
-         4         7.009920
-         5         1.702257
-         6         1.052905
-         7         2.219152
-         8         5.660210
-         9         3.325007
-         10        3.076276
-         11       -0.551683
-         12       -0.471449
-         13        0.301713
-         14        5.904727
-         15        0.048110
-         16        1.007636
-         17        1.648225
-         18        1.987789
-         19        2.237318
-         20       -0.487827
-         21       -0.241175
-         22        1.485745
-         23        2.463474
-         24        0.011040
-         25        2.478956
-         26        0.256784
-         27        1.267908
-         28       -0.202816
-         29        0.848605
-                    {\ldots}    
-         10519    -0.403161
-         10589    -0.634722
-         10593    -0.499267
-         10594     1.906609
-         10595     0.296747
-         10596    -0.583402
-         10597    -0.082574
-         10601     0.292924
-         10606     0.062345
-         10608    -0.359333
-         10611    -0.442950
-         10648    -0.299174
-         10649    -0.505375
-         10650    -0.146442
-         10653    -0.148176
-         10689     0.154665
-         10690     0.298114
-         10691    -0.033030
-         10724    -0.164507
-         10725    -0.041197
-         10727    -0.359806
-         10728    -0.630250
-         10755     0.418332
-         10756     0.372499
-         10757    -0.283714
-         10758     0.819481
-         10759    -0.194993
-         10760     0.201507
-         10762    -0.395555
-         10770    -0.408849
-         Length: 2598, dtype: float64
+    \section{Data Wrangling for hypothesis
+test}\label{data-wrangling-for-hypothesis-test}
+
+\begin{itemize}
+\tightlist
+\item
+  The genre\_df dataframe contains the rows only where the genres string
+  column is not empty and thus eliminating the empty data.
+\item
+  The action\_movie\_df contains the new dataframe containing the vote
+  average of only the action movies.
+\item
+  We are calculation the mean,standard deviation of all the movies and
+  the mean of the action list by taking the vote\_average column from
+  the data frame and converting it to the one dimensional list.
+\item
+  We then calculated the z-score of the analysis.
+\end{itemize}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}217}]:} \PY{n}{genre\PYZus{}df}\PY{o}{=}\PY{n}{movie\PYZus{}df}\PY{p}{[}\PY{n}{movie\PYZus{}df}\PY{o}{.}\PY{n}{genres}\PY{o}{\PYZgt{}}\PY{l+m+mi}{0}\PY{p}{]}
+          \PY{n}{action\PYZus{}movie\PYZus{}df}\PY{o}{=}\PY{n}{action\PYZus{}movie\PYZus{}list}\PY{p}{(}\PY{n}{genre\PYZus{}df}\PY{p}{)}
+          \PY{n}{population\PYZus{}mean}\PY{o}{=}\PY{n}{genre\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vote\PYZus{}average}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+          \PY{n}{population\PYZus{}std}\PY{o}{=}\PY{n}{genre\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vote\PYZus{}average}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{std}\PY{p}{(}\PY{p}{)}
+          \PY{n}{action\PYZus{}movie\PYZus{}mean}\PY{o}{=}\PY{n}{action\PYZus{}movie\PYZus{}df}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{vote\PYZus{}average}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{p}{)}
+          \PY{k}{print} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{The mean of the population is \PYZob{}\PYZcb{} , the std of population is \PYZob{}\PYZcb{} and the mean of the action movies are \PYZob{}\PYZcb{}}\PY{l+s+s1}{\PYZsq{}}\PY{o}{.}\PY{n}{format}\PY{p}{(}\PY{n}{population\PYZus{}mean}\PY{p}{,}\PY{n}{population\PYZus{}std}\PY{p}{,}\PY{n}{action\PYZus{}movie\PYZus{}mean}\PY{p}{)}
+          \PY{n}{z\PYZus{}score}\PY{o}{=}\PY{p}{(}\PY{n}{action\PYZus{}movie\PYZus{}mean}\PY{o}{\PYZhy{}}\PY{n}{population\PYZus{}mean}\PY{p}{)}\PY{o}{/}\PY{n}{population\PYZus{}std}
+          \PY{k}{print} \PY{n}{z\PYZus{}score}
 \end{Verbatim}
-            
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+The mean of the population is 5.97397399244 , the std of population is 0.934260258321 and the mean of the action movies are 5.78742138365
+-0.199679486662
+
+    \end{Verbatim}
+
+    \section{Conclusion}\label{conclusion}
+
+From our analysis by performing the z-test on the action movie data we
+got the z-score of approx -0.20 and the z-critical value for 95\% two
+tail test is +1.96 and -1.96 and clearly our value lies in between this
+so we fail to reject the null hypotheis that the vote average of action
+movies is different than that of all movies.
+
 
     % Add a bibliography block to the postdoc
     
